@@ -1,0 +1,9 @@
+<RCC>
+    <qresource prefix="/icons">
+        <file>modi_backup_logo_banner_60.png</file>
+        <file>search64.ico</file>
+        <file>open_folder.ico</file>
+        <file>modi_backup_icon.ico</file>
+        <file>backup_icon32.ico</file>
+    </qresource>
+</RCC>
