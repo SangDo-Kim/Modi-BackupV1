@@ -18,3 +18,7 @@ or just copy needed modules (py files) above into the same folder with main py a
 
 V1.0
 - Initial creation
+
+V1.1
+- After backup, show the list of backed up files in another window.
+- Add pattern_string_ex to exclude files.
