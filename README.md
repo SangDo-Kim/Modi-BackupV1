@@ -1,4 +1,4 @@
-# Modi-Backup V1.0
+# Modi-Backup V1.1
 Written by SangDo_Kim, https://sangdo-kim.blogspot.com
 This Python program backs ups files in a folder and sub-folders to a ZIP file.
 ZIP file name example: doc_folder_20240518_161411.zip.
