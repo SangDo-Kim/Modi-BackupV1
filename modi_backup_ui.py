@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'modi_backup_uixzkZFr.ui'
+## Form generated from reading UI file 'modi_backup_uiukWSBk.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.7.0
 ##
@@ -25,7 +25,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(795, 536)
+        MainWindow.resize(814, 546)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.verticalLayout_3 = QVBoxLayout(self.centralwidget)
@@ -58,26 +58,45 @@ class Ui_MainWindow(object):
 
         self.groupBox = QGroupBox(self.centralwidget)
         self.groupBox.setObjectName(u"groupBox")
-        self.groupBox.setMinimumSize(QSize(0, 200))
+        self.groupBox.setMinimumSize(QSize(0, 210))
         self.groupBox.setMaximumSize(QSize(16777215, 200))
         self.groupBox.setFont(font)
         self.gridLayout = QGridLayout(self.groupBox)
         self.gridLayout.setObjectName(u"gridLayout")
+        self.comboBox_sub_level = QComboBox(self.groupBox)
+        self.comboBox_sub_level.addItem("")
+        self.comboBox_sub_level.addItem("")
+        self.comboBox_sub_level.addItem("")
+        self.comboBox_sub_level.addItem("")
+        self.comboBox_sub_level.addItem("")
+        self.comboBox_sub_level.addItem("")
+        self.comboBox_sub_level.setObjectName(u"comboBox_sub_level")
+        self.comboBox_sub_level.setMaximumSize(QSize(120, 16777215))
+
+        self.gridLayout.addWidget(self.comboBox_sub_level, 5, 2, 1, 1)
+
+        self.lineEdit_pattern = QLineEdit(self.groupBox)
+        self.lineEdit_pattern.setObjectName(u"lineEdit_pattern")
+
+        self.gridLayout.addWidget(self.lineEdit_pattern, 1, 2, 1, 1)
+
+        self.label_3 = QLabel(self.groupBox)
+        self.label_3.setObjectName(u"label_3")
+        self.label_3.setEnabled(False)
+        self.label_3.setMinimumSize(QSize(0, 20))
+        self.label_3.setMaximumSize(QSize(16777215, 20))
+
+        self.gridLayout.addWidget(self.label_3, 3, 2, 1, 1)
+
         self.label_matched = QLabel(self.groupBox)
         self.label_matched.setObjectName(u"label_matched")
 
-        self.gridLayout.addWidget(self.label_matched, 6, 2, 1, 1)
-
-        self.label = QLabel(self.groupBox)
-        self.label.setObjectName(u"label")
-        self.label.setMaximumSize(QSize(16777215, 32))
-
-        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_matched, 7, 2, 1, 1)
 
         self.label_4 = QLabel(self.groupBox)
         self.label_4.setObjectName(u"label_4")
 
-        self.gridLayout.addWidget(self.label_4, 4, 0, 1, 1)
+        self.gridLayout.addWidget(self.label_4, 5, 0, 1, 1)
 
         self.pushButton_source_open = QPushButton(self.groupBox)
         self.pushButton_source_open.setObjectName(u"pushButton_source_open")
@@ -90,31 +109,30 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.pushButton_source_open, 0, 4, 1, 1)
 
-        self.label_5 = QLabel(self.groupBox)
-        self.label_5.setObjectName(u"label_5")
-        self.label_5.setEnabled(False)
-
-        self.gridLayout.addWidget(self.label_5, 5, 2, 1, 1)
-
-        self.comboBox_sub_level = QComboBox(self.groupBox)
-        self.comboBox_sub_level.addItem("")
-        self.comboBox_sub_level.addItem("")
-        self.comboBox_sub_level.addItem("")
-        self.comboBox_sub_level.addItem("")
-        self.comboBox_sub_level.addItem("")
-        self.comboBox_sub_level.addItem("")
-        self.comboBox_sub_level.setObjectName(u"comboBox_sub_level")
-        self.comboBox_sub_level.setMaximumSize(QSize(120, 16777215))
-
-        self.gridLayout.addWidget(self.comboBox_sub_level, 4, 2, 1, 1)
-
         self.pushButton_count = QPushButton(self.groupBox)
         self.pushButton_count.setObjectName(u"pushButton_count")
         icon1 = QIcon()
         icon1.addFile(u":/icons/search64.ico", QSize(), QIcon.Normal, QIcon.Off)
         self.pushButton_count.setIcon(icon1)
 
-        self.gridLayout.addWidget(self.pushButton_count, 6, 0, 1, 1)
+        self.gridLayout.addWidget(self.pushButton_count, 7, 0, 1, 1)
+
+        self.label_source = QLabel(self.groupBox)
+        self.label_source.setObjectName(u"label_source")
+
+        self.gridLayout.addWidget(self.label_source, 0, 2, 1, 1)
+
+        self.label = QLabel(self.groupBox)
+        self.label.setObjectName(u"label")
+        self.label.setMaximumSize(QSize(16777215, 32))
+
+        self.gridLayout.addWidget(self.label, 1, 0, 1, 1)
+
+        self.label_5 = QLabel(self.groupBox)
+        self.label_5.setObjectName(u"label_5")
+        self.label_5.setEnabled(False)
+
+        self.gridLayout.addWidget(self.label_5, 6, 2, 1, 1)
 
         self.pushButton_source_select = QPushButton(self.groupBox)
         self.pushButton_source_select.setObjectName(u"pushButton_source_select")
@@ -124,23 +142,15 @@ class Ui_MainWindow(object):
 
         self.gridLayout.addWidget(self.pushButton_source_select, 0, 0, 1, 1)
 
-        self.label_3 = QLabel(self.groupBox)
-        self.label_3.setObjectName(u"label_3")
-        self.label_3.setEnabled(False)
-        self.label_3.setMinimumSize(QSize(0, 20))
-        self.label_3.setMaximumSize(QSize(16777215, 20))
+        self.label_6 = QLabel(self.groupBox)
+        self.label_6.setObjectName(u"label_6")
 
-        self.gridLayout.addWidget(self.label_3, 3, 2, 1, 1)
+        self.gridLayout.addWidget(self.label_6, 4, 0, 1, 1)
 
-        self.label_source = QLabel(self.groupBox)
-        self.label_source.setObjectName(u"label_source")
+        self.lineEdit_pattern_ex = QLineEdit(self.groupBox)
+        self.lineEdit_pattern_ex.setObjectName(u"lineEdit_pattern_ex")
 
-        self.gridLayout.addWidget(self.label_source, 0, 2, 1, 1)
-
-        self.lineEdit_pattern = QLineEdit(self.groupBox)
-        self.lineEdit_pattern.setObjectName(u"lineEdit_pattern")
-
-        self.gridLayout.addWidget(self.lineEdit_pattern, 1, 2, 1, 1)
+        self.gridLayout.addWidget(self.lineEdit_pattern_ex, 4, 2, 1, 1)
 
 
         self.verticalLayout_3.addWidget(self.groupBox)
@@ -230,11 +240,6 @@ class Ui_MainWindow(object):
                         "r_20240518_161411.zip)</p>\n"
 "<p style=\" margin-top:0px; margin-bottom:0px; margin-left:0px; margin-right:0px; -qt-block-indent:0; text-indent:0px;\">It also provides options to backup only new or modified files, or all files.</p></body></html>", None))
         self.groupBox.setTitle(QCoreApplication.translate("MainWindow", u"Folder and files to backup", None))
-        self.label_matched.setText(QCoreApplication.translate("MainWindow", u"*None*", None))
-        self.label.setText(QCoreApplication.translate("MainWindow", u"Files to backup:", None))
-        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Subfolder level:", None))
-        self.pushButton_source_open.setText("")
-        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Tip: Level 1 means subfolders are included. Level 2 means subfolders of subfolders are also included.", None))
         self.comboBox_sub_level.setItemText(0, QCoreApplication.translate("MainWindow", u"No subfolder", None))
         self.comboBox_sub_level.setItemText(1, QCoreApplication.translate("MainWindow", u"Level 1", None))
         self.comboBox_sub_level.setItemText(2, QCoreApplication.translate("MainWindow", u"Level 2", None))
@@ -242,11 +247,17 @@ class Ui_MainWindow(object):
         self.comboBox_sub_level.setItemText(4, QCoreApplication.translate("MainWindow", u"Level 4", None))
         self.comboBox_sub_level.setItemText(5, QCoreApplication.translate("MainWindow", u"All the levels", None))
 
-        self.pushButton_count.setText(QCoreApplication.translate("MainWindow", u"Count files", None))
-        self.pushButton_source_select.setText(QCoreApplication.translate("MainWindow", u"Select a folder", None))
-        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Tip: Add file types separated by semicolons (;). e.g: *.txt; *.xls; *.doc or for all files: *.*", None))
-        self.label_source.setText(QCoreApplication.translate("MainWindow", u"*Not selected yet*", None))
         self.lineEdit_pattern.setText(QCoreApplication.translate("MainWindow", u"*.*", None))
+        self.label_3.setText(QCoreApplication.translate("MainWindow", u"Tip: Add file types separated by semicolons (;). e.g: *.txt; *.xls; *.doc or for all files: *.*", None))
+        self.label_matched.setText(QCoreApplication.translate("MainWindow", u"*None*", None))
+        self.label_4.setText(QCoreApplication.translate("MainWindow", u"Subfolder level:", None))
+        self.pushButton_source_open.setText("")
+        self.pushButton_count.setText(QCoreApplication.translate("MainWindow", u"Count files", None))
+        self.label_source.setText(QCoreApplication.translate("MainWindow", u"*Not selected yet*", None))
+        self.label.setText(QCoreApplication.translate("MainWindow", u"Files to backup:", None))
+        self.label_5.setText(QCoreApplication.translate("MainWindow", u"Tip: Level 1 means subfolders are included. Level 2 means subfolders of subfolders are also included.", None))
+        self.pushButton_source_select.setText(QCoreApplication.translate("MainWindow", u"Select a folder", None))
+        self.label_6.setText(QCoreApplication.translate("MainWindow", u"Exclude files:", None))
         self.groupBox_2.setTitle(QCoreApplication.translate("MainWindow", u"Back them up!", None))
         self.pushButton_target_select.setText(QCoreApplication.translate("MainWindow", u"Select a folder", None))
         self.label_2.setText(QCoreApplication.translate("MainWindow", u"Last backup:", None))

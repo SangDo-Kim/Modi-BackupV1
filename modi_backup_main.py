@@ -1,11 +1,13 @@
-"""# Modi-Backup V1.0
+"""# Modi-Backup V1.1
 Written by SangDo_Kim, https://sangdo-kim.blogspot.com
 This Python program backs ups files in a folder and sub-folders to a ZIP file.
 ZIP file name example: doc_folder_20240518_161411.zip.
 It also provides options to backup only new or modified files, or all files.
+Please refer to Modi-Backup_Demo.jpg.
 이 파이선 프로그램은 폴더 및 그 하위 폴더의 파일들을 ZIP 파일로 백업합니다.
 ZIP 파일 이름 예: doc_folder_20240518_161411.zip.
 또한 새 파일 또는 변경된 파일만 백업할지, 모든 파일을 백업할지도 선택할 수 있습니다.
+Modi-Backup_Demo.jpg를 참조하십시오.
 
 sangdo_mod package (not in Python Package Index (PyPI), but it's my own custom package):
 The main py file imports as follows:
@@ -16,6 +18,10 @@ or just copy needed modules (py files) above into the same folder with main py a
 
 V1.0
 - Initial creation
+
+V1.1
+- After backup, show the list of backed up files in another window.
+- Add pattern_string_ex to exclude files.
 """
 
 import fnmatch
@@ -27,6 +33,7 @@ from PySide6.QtCore import QCoreApplication
 from PySide6.QtWidgets import QMainWindow, QApplication, QFileDialog, QMessageBox
 
 from modi_backup_ui import Ui_MainWindow
+from backed_up_file_list_ui import Ui_MainWindow as Ui_ModalWindow
 from my_constants import MyCons
 from sangdo_mod.config import Config
 from sangdo_mod.time_stamp import get_time_stamp
@@ -46,10 +53,15 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def __init__(self, *args, obj=None, **kwargs):
         super().__init__(*args, **kwargs)
         self.setupUi(self)
-        self.setWindowTitle("Modi-Backup V1.0")
+        self.setWindowTitle("Modi-Backup V1.1")
         self.matched_list = []
         self.backup_log = DictData("backup_log.json")
         self.backup_log.load_from_file()
+
+        # The list of files which are just backed up this time.
+        self.backed_up_list = []
+
+        self.zip_full_path = ""
 
         # It is part of backup zip file name.
         self.dir_name = None
@@ -60,6 +72,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.label_source.setText(self.my_config.source_folder)
             self.label_target.setText(self.my_config.target_folder)
             self.lineEdit_pattern.setText(self.my_config.pattern)
+            self.lineEdit_pattern_ex.setText(self.my_config.pattern_ex)
             if self.my_config.all_or_mod == "mod":
                 self.radioButton_mod.setChecked(True)
             else:
@@ -105,13 +118,13 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.update_my_config()
         self.my_config.save_to_file()
 
-        if self.label_source.text() == MyCons.none_str:
+        if self.label_source.text() == MyCons.not_selected_yet:
             QMessageBox.information(self, "Info",
                 "Select a folder to backup first."
                 )
             return
 
-        if self.label_target.text() == MyCons.none_str:
+        if self.label_target.text() == MyCons.not_selected_yet:
             QMessageBox.information(self, "Info",
                 "Select a folder to save backup ZIP file first."
                 )
@@ -128,11 +141,12 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             return None
 
         zip_filename = self.get_zip_filename()
-        zip_full_path = os.path.join(self.label_target.text(), zip_filename)
+        self.zip_full_path = str(os.path.join(self.label_target.text(), zip_filename))
 
         backed_up_no = 0
         source_path_len = len(self.label_source.text())
-        with zipfile.ZipFile(zip_full_path, 'w') as zipf:
+        self.backed_up_list = []
+        with zipfile.ZipFile(self.zip_full_path, 'w') as zipf:
             for file_path in self.matched_list:
                 if os.path.exists(file_path):
                     modified_datetime = os.path.getmtime(file_path)
@@ -153,34 +167,35 @@ class MainWindow(QMainWindow, Ui_MainWindow):
                     zipf.write(file_path, file_path[source_path_len:])
                     backed_up_no += 1
                     self.backup_log.dict[file_path] = modified_datetime
+                    self.backed_up_list.append(os.path.basename(file_path))
                 else:
                     continue
 
         if backed_up_no == 0:
             # The new backup file contains 0 files
             try:
-                os.remove(zip_full_path)
+                os.remove(self.zip_full_path)
             except OSError as e:
                 self.statusbar.showMessage(f"Error: {e.strerror}")
 
         self.backup_log.save_to_file()
+        self.show_last_backup()
+        self.statusbar.showMessage(f"{backed_up_no} files were backed up!", 10000)
 
         if self.radioButton_mod.isChecked():
-            QMessageBox.information(self, "Info",
-                                    f"Only for new or modified files, {backed_up_no} files were backed up!"
-                                    )
+            backed_up_message = f"Only for new or modified files, {backed_up_no} files were backed up!"
         else:
-            QMessageBox.information(self, "Info",
-                                    f"For all the files matched with the conditions, "
-                                    f"{backed_up_no} files were backed up!"
-                                    )
-        self.statusbar.showMessage(f"{backed_up_no} files were backed up!", 10000)
-        self.show_last_backup()
+            backed_up_message = (
+                f"For all the files matched with the conditions, "
+                f"{backed_up_no} files were backed up!")
+        modal = ModalWindow(backed_up_message, self.backed_up_list, self.zip_full_path, self)
+        modal.show()
 
     def update_my_config(self):
         self.my_config.source_folder = self.label_source.text()
         self.my_config.target_folder = self.label_target.text()
         self.my_config.pattern = self.lineEdit_pattern.text()
+        self.my_config.pattern_ex = self.lineEdit_pattern_ex.text()
         if self.radioButton_mod.isChecked():
             self.my_config.all_or_mod = "mod"
         else:
@@ -194,7 +209,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         os.startfile(self.label_target.text())
 
     def count_matched_files(self):
-        if self.label_source.text() == MyCons.none_str:
+        if self.label_source.text() == MyCons.not_selected_yet:
             QMessageBox.information(self, "Info",
                 "Select a folder to backup first."
                 )
@@ -215,6 +230,7 @@ class MainWindow(QMainWindow, Ui_MainWindow):
         self.matched_list = get_matched_files(
             self.label_source.text(),
             self.lineEdit_pattern.text(),
+            self.lineEdit_pattern_ex.text(),
             sub_level
         )
 
@@ -231,8 +247,8 @@ class MainWindow(QMainWindow, Ui_MainWindow):
     def show_last_backup(self):
         self.get_dir_name()
         if (
-                self.label_target.text() == MyCons.none_str
-                or self.label_source.text() == MyCons.none_str
+                self.label_target.text() == MyCons.not_selected_yet
+                or self.label_source.text() == MyCons.not_selected_yet
                 ):
             self.label_last_backup.setText(MyCons.none_str)
         else:
@@ -258,12 +274,47 @@ class MainWindow(QMainWindow, Ui_MainWindow):
             self.dir_name = None
 
 
+class ModalWindow(QMainWindow, Ui_ModalWindow):
+    def __init__(self, backed_up_message: str, backed_up_list: list, zip_full_path: str, parent=None):
+        super().__init__(parent)
+        self.setupUi(self)
+        self.pushButton_open_folder.clicked.connect(self.open_folder)
+
+        self.plainTextEdit.setPlainText(backed_up_message)
+        for item in backed_up_list:
+            self.listWidget.addItem(item)
+        self.zip_path, self.zip_filename = os.path.split(zip_full_path)
+
+        # Get the size of zip file
+        if os.path.exists(zip_full_path):
+            self.label_zip_name.setText(self.zip_filename)
+            file_size = os.path.getsize(zip_full_path)
+            suffixes = ['B', 'KB', 'MB', 'GB', 'TB']
+            index = 0
+            file_size_temp = file_size
+            while file_size_temp >= 1024 and index < len(suffixes) - 1:
+                file_size_temp /= 1024.0
+                index += 1
+            file_size_mod = "{:.2f} {}".format(file_size_temp, suffixes[index])
+            self.label_size.setText(f"Size: {file_size_mod}")
+        else:
+            self.label_zip_name.setText("Zip file: *None*")
+            self.label_size.setText(f"Size: *None*")
+
+
+    def open_folder(self):
+        if os.path.exists(self.zip_path):
+            os.startfile(self.zip_path)
+
+
+
 class MyConfig(Config):
     def __init__(self):
         super().__init__()
         self.source_folder = ""
         self.target_folder = ""
         self.pattern = ""
+        self.pattern_ex = ""
         self.all_or_mod = ""     # values: "all", "mod". Backup all matched or only modified.
         self.sub_level = 0
 
